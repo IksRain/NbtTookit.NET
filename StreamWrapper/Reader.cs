@@ -1,4 +1,4 @@
-﻿using System.Buffers.Binary;
+﻿using System.Buffers;
 using System.Text;
 using static System.Buffers.Binary.BinaryPrimitives;
 
@@ -79,6 +79,37 @@ public struct Reader(Stream stream, Option option) : IDisposable
 
         var charsLength = _decoder.GetChars(span, _charSpanBuffer, flush: true);
         return _charSpanBuffer.AsSpan(0, charsLength);
+    }
+    
+    public void Skip(long byteCount)
+    {
+        SeekStream(byteCount,stream,option.BufferPool);
+        
+        return;
+        
+        // ReSharper disable once ParameterHidesPrimaryConstructorParameter
+        void SeekStream(long count,Stream stream,ArrayPool<byte> pool)
+        {
+            if (stream.CanSeek)
+            {
+                stream.Seek(count, SeekOrigin.Current);
+            }
+            else
+            {
+                using var use = pool.Use(8192);
+                Span<byte> buffer = use.Array;
+                var remaining = count;
+                while (remaining > 0)
+                {
+                    var toRead = (int)Math.Min(buffer.Length, remaining);
+                    var read = stream.Read(buffer[..toRead]);
+                    if (read == 0)
+                        throw new EndOfStreamException("Cannot skip beyond the end of the stream.");
+                    
+                    remaining -= read;
+                }
+            }
+        }
     }
 
     public void Dispose()

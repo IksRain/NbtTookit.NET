@@ -66,8 +66,9 @@ public struct Writer(Stream stream, Option option)
         stream.Write(buffer.Array.AsSpan(0, byteCount));
     }
     
-    
-    
-    
+    public void FillWith(ReadOnlySpan<byte> fillBytes)
+    {
+        stream.Write(fillBytes);
+    }
     
 }
