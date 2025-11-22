@@ -4,7 +4,7 @@ using static System.Buffers.Binary.BinaryPrimitives;
 
 namespace StreamWrapper;
 
-public struct Reader(Stream stream, Option option) : IDisposable
+public struct StreamReader(Stream stream, Option option) : IDisposable
 {
     private readonly Decoder _decoder = option.Encoding.GetDecoder();
     private char[] _charSpanBuffer = option.CharBufferPool.Rent(256);

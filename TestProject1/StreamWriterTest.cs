@@ -1,8 +1,9 @@
 ﻿using StreamWrapper;
+using StreamWriter = StreamWrapper.StreamWriter;
 
 namespace TestProject1;
 
-public class WriterTest
+public class StreamWriterTest
 {
     [SetUp]
     public void Setup()
@@ -14,7 +15,7 @@ public class WriterTest
     public void MinimalTest()
     {
         var memoryStream = new MemoryStream();
-        var writer = new Writer(memoryStream,Option.Java);
+        var writer = new StreamWriter(memoryStream,Option.Java);
         
         writer.PutTag(NbtKind.Object);
         writer.WriteString("Level");

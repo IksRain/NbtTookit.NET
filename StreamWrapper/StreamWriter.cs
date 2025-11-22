@@ -3,7 +3,7 @@ using System.Text;
 
 namespace StreamWrapper;
 using static BinaryPrimitives;
-public struct Writer(Stream stream, Option option)
+public struct StreamWriter(Stream stream, Option option)
 {
     private Encoder _encoder = option.Encoding.GetEncoder();
     public void PutTag(NbtKind tag)=>stream.WriteByte((byte)tag);

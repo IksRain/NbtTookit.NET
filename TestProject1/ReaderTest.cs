@@ -1,10 +1,11 @@
 ﻿using System.Buffers;
 using System.Text;
 using StreamWrapper;
+using StreamReader = StreamWrapper.StreamReader;
 
 namespace TestProject1;
 
-public class ReaderTest
+public class StreamReaderTest
 {
     [SetUp]
     public void Setup()
@@ -15,7 +16,7 @@ public class ReaderTest
     public void MinimalTest()
     {
         using var fileStream = File.OpenRead("TestFile\\Minimal.nbt");
-        var reader = new Reader(fileStream, Option.Java);
+        var reader = new StreamReader(fileStream, Option.Java);
         
         var readTag = reader.ReadTag();
         
